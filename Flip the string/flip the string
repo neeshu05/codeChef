@@ -1,0 +1,16 @@
+for _ in range(int(input())):
+    a = int(input(),2)
+    b = int(input(),2)
+    c = a^b
+    xor = list(bin(c)[2:])
+    count = 0
+    for i in range(len(xor)):
+        if xor[i] == '1':
+            count += 1
+            while i < len(xor):
+                if xor[i] == '0':
+                    break
+                xor[i] = '0'
+                i += 2
+    print(count)
+    
