@@ -1,0 +1,31 @@
+for _ in range(int(input())):
+    n = int(input())
+    chess = [list(input()) for i in range(n)]
+
+    dp = [[-1]*n for _ in range(n)]
+    
+    def helper(r,c):
+        #out of bound cases
+        if r<0 or c<0 or r>=n or c>=n:
+            return 0
+        #base case
+        if c == n-1:
+            if chess[r][c] == 'P':
+                return 1
+            else:
+                return 0
+        if dp[r][c] != -1:
+            return dp[r][c]
+                
+        if chess[r][c] == 'P':
+            ans = 1
+        else:
+            ans = 0
+        
+        dp[r][c] = ans + max(helper(r-2,c+1),helper(r-1,c+2),helper(r+1,c+2),helper(r+2,c+1))
+        return dp[r][c]
+    for i in range(n):
+        for j in range(n):
+            if chess[i][j] == 'K':
+                print(helper(i,j))
+                break
