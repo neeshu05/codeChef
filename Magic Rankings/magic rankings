@@ -1,0 +1,50 @@
+#python
+#memoization
+for _ in range(int(input())):
+    n = int(input())
+    mat = [list(map(int, input().split())) for i in range(n)]
+    N = len(mat)
+    memo = {}
+    def helper(r,c):
+        if (r,c) in memo:
+            return memo[(r,c)]
+        #out of bound cases
+        if r<0 or c<0 or r>=N or c>=N:
+            return float('-inf')
+        #base case
+        if r == N-1 and c == N-1:
+            return mat[r][c]
+        memo[(r,c)] = mat[r][c] + max(helper(r+1,c),helper(r,c+1))
+        return memo[(r,c)]
+        
+    average = helper(0,0) - mat[0][0] - mat[N-1][N-1]
+    if average >= 0:
+        print(average/(2*N-3))
+    else:
+        print('Bad Judges')
+        
+        
+#tabulation
+def soln(n, mat):
+    dp = [[0] * n for i in range(n)]
+    for i in range(n):
+        for j in range(n):
+            if i == 0 and j == 0:
+                continue
+            elif i == 0:
+                dp[i][j] = mat[i][j] + dp[i][j-1]
+            elif j == 0:
+                dp[i][j] = mat[i][j] + dp[i-1][j]
+            else:
+                dp[i][j] = mat[i][j] + max(dp[i-1][j], dp[i][j-1])
+    #print(dp)
+    return dp[n-1][n-1] / (2 * n - 3)
+
+for _ in range(int(input())):
+    n = int(input())
+    mat = [list(map(int, input().split())) for i in range(n)]
+    res = soln(n, mat)
+    if res >= 0:
+        print(res)
+    else:
+        print("Bad Judges")
